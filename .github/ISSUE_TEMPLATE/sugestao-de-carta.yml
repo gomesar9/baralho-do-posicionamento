@@ -1,0 +1,70 @@
+name: Sugestão de carta
+description: Proponha uma frase nova para o baralho, com a fonte.
+title: "[Carta] "
+labels: ["sugestão de carta"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por sugerir uma carta! Antes de enviar, leia as [regras de contribuição](https://github.com/gomesar9/baralho-do-posicionamento#regras).
+        Uma carta por issue.
+
+  - type: textarea
+    id: frase
+    attributes:
+      label: Frase
+      description: |
+        Como deve aparecer na carta: curta, fiel à fonte e sem pistas de quem disse ou defendeu (nada de nomes, partidos ou apelidos).
+      placeholder: "Ex.: Garantir o aumento anual do salário mínimo acima da inflação."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: politico
+    attributes:
+      label: Político
+      description: De quem é a frase ou a proposta.
+      options:
+        - LULA
+        - FLÁVIO BOLSONARO
+    validations:
+      required: true
+
+  - type: input
+    id: fonte
+    attributes:
+      label: Link da fonte
+      description: Onde o político diz, propõe ou defende isso (vídeo, documento oficial, plano de governo, rede social oficial ou reportagem de veículo reconhecido).
+      placeholder: "https://"
+    validations:
+      required: true
+
+  - type: textarea
+    id: contexto
+    attributes:
+      label: Contexto da fonte
+      description: Data, ocasião e, se for vídeo, o minuto. Se a frase resume algo, cole o trecho original.
+      placeholder: "Ex.: Entrevista à rádio X em 12/03/2026, aos 14:20: \"...\""
+    validations:
+      required: true
+
+  - type: input
+    id: hashtag
+    attributes:
+      label: Tema (hashtag)
+      description: Prefira um tema que já existe no baralho (#economia, #saude, #seguranca, #educacao, #direitostrabalhistas...). Minúsculas e sem acento.
+      placeholder: "#economia"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmacoes
+    attributes:
+      label: Confirmações
+      options:
+        - label: A fonte é verificável e mostra o próprio político dizendo, propondo ou defendendo isso.
+          required: true
+        - label: A frase é fiel à fonte e não revela de quem é.
+          required: true
+        - label: Verifiquei que não existe carta igual ou parecida no baralho nem em outra issue aberta.
+          required: true
