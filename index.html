@@ -29,6 +29,7 @@
 
   <a class="skip" href="#mesa">Pular para as cartas</a>
 
+  <div class="tela">
   <header class="top">
     <div class="wrap">
       <h1 class="title"><span class="isso">Isso é</span> bom ou ruim?</h1>
@@ -44,10 +45,28 @@
     </div>
   </header>
 
-  <main id="mesa" class="wrap" tabindex="-1">
-    <h2 class="sr-only">Cartas na mesa</h2>
-    <ul class="grade" id="grade"></ul>
+  <main id="mesa" class="mesa" tabindex="-1">
+    <h2 class="sr-only">Cartas na mão</h2>
+    <div class="leque" id="leque">
+      <div class="leque-palco" id="leque-palco" role="group" aria-roledescription="leque de cartas"
+           aria-label="Cartas na mão" aria-describedby="leque-dica">
+        <img class="mao mao-fundo" data-mao="mao-fundo" alt="" draggable="false">
+        <div class="cartas" id="cartas"></div>
+        <img class="mao mao-polegar" data-mao="mao-polegar" alt="" draggable="false">
+      </div>
+      <button type="button" class="seta seta-esq" id="seta-esq" aria-label="Carta anterior">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <button type="button" class="seta seta-dir" id="seta-dir" aria-label="Próxima carta">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <p class="dica" id="leque-dica">
+      <span>Arraste para os lados, use as setas do teclado ou a roda do mouse. Toque na carta do centro para jogar.</span>
+      <span class="posicao" id="posicao" aria-hidden="true"></span>
+    </p>
   </main>
+  </div>
 
   <footer class="rodape">
     <div class="wrap">
@@ -94,6 +113,7 @@
   </div>
 
   <script src="cards.js"></script>
+  <script src="leque.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

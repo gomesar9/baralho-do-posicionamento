@@ -77,17 +77,17 @@ main:focus { outline: none; }
 .btn[disabled], .btn[aria-disabled="true"] { opacity: .45; cursor: not-allowed; transform: none; }
 
 /* ---------- Cabeçalho ---------- */
-.top { padding: 20px 0 8px; }
+.top { padding: 16px 0 4px; }
 .title { margin: 0; font-size: clamp(1.75rem, 6vw, 2.6rem); line-height: 1.1; letter-spacing: -.01em; }
 .isso { color: var(--acento); }
-.lead { margin: 8px 0 16px; color: var(--muted); max-width: 60ch; }
+.lead { margin: 6px 0 12px; color: var(--muted); max-width: 60ch; font-size: .95rem; }
 .toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
 .progress { display: grid; gap: 6px; min-width: 200px; flex: 1 1 200px; max-width: 360px; }
 .progress .bar { display: block; height: 6px; border-radius: 3px; background: var(--linha); overflow: hidden; }
 .progress .bar span { display: block; height: 100%; width: 0; background: var(--acento); transition: width .3s ease; }
 
 .filtros {
-  display: flex; gap: 8px; margin: 16px -16px 0; padding: 4px 16px 10px;
+  display: flex; gap: 8px; margin: 12px -16px 0; padding: 4px 16px 10px;
   overflow-x: auto; scrollbar-width: thin; -webkit-overflow-scrolling: touch;
 }
 @media (min-width: 720px) { .filtros { flex-wrap: wrap; overflow: visible; margin: 16px 0 0; padding: 4px 0 10px; } }
@@ -99,27 +99,73 @@ main:focus { outline: none; }
 .chip[aria-pressed="true"] { background: var(--chip-on-bg); color: var(--chip-on-fg); border-color: var(--chip-on-bg); }
 .chip .n { opacity: .65; margin-left: 4px; }
 
-/* ---------- Mesa ---------- */
-.grade {
-  list-style: none; margin: 8px 0 32px; padding: 0;
-  display: grid; gap: 14px;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+/* ---------- Mesa: leque na mão ---------- */
+.tela { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; }
+.mesa { flex: 1 1 auto; display: flex; flex-direction: column; min-height: 460px; }
+.leque { position: relative; flex: 1 1 auto; min-height: 420px; }
+.leque-palco {
+  position: absolute; inset: 0; overflow: hidden;
+  touch-action: pan-y; user-select: none; -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
-@media (min-width: 720px) { .grade { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 18px; } }
+.cartas { position: absolute; inset: 0; z-index: 1; perspective: 1100px; perspective-origin: 50% 70%; }
 
-.mini {
-  all: unset; box-sizing: border-box; display: block; width: 100%; cursor: pointer;
-  border-radius: 7%/5%;
-  transition: transform .2s ease, filter .2s ease;
+.braco {
+  position: absolute; left: 50%; bottom: var(--base);
+  width: var(--cw); height: var(--ch); margin-left: calc(var(--cw) / -2);
+  transform-origin: 50% calc(100% + var(--raio));
+  transform-style: preserve-3d;
+  will-change: transform;
 }
-.mini:hover { transform: translateY(-4px); }
-.mini:focus-visible { outline: 3px solid var(--acento); outline-offset: 4px; }
-.mini .palco-mini { container-type: inline-size; position: relative; aspect-ratio: 5 / 7; }
-.mini .face { box-shadow: var(--sombra); }
+.mini {
+  all: unset; box-sizing: border-box; display: block; position: relative;
+  width: 100%; height: 100%; cursor: pointer;
+  border-radius: 8%/5.7%;
+  transform-origin: 50% 100%;
+  will-change: transform;
+}
+.arrastando .mini { cursor: grabbing; }
+.mini:focus-visible { outline: 3px solid var(--acento); outline-offset: 5px; }
+.mini .palco-mini { container-type: inline-size; position: absolute; inset: 0; }
+.mini .face { box-shadow: 0 1px 2px rgba(0,0,0,.18), 0 2px 6px rgba(0,0,0,.12); }
+.sombra-oferta {
+  position: absolute; inset: 0; border-radius: inherit; opacity: 0; pointer-events: none;
+  box-shadow: 0 26px 44px rgba(0,0,0,.42), 0 8px 14px rgba(0,0,0,.2);
+}
 .mini.vista .face::after {
   content: ""; position: absolute; inset: 0; background: rgba(255,255,255,.4); border-radius: inherit;
 }
 .mini.voando { visibility: hidden; }
+
+/* A mão: imagem de fundo (palma e dedos) atrás e polegar na frente das cartas.
+   As duas imagens têm o mesmo enquadramento e giram juntas pelo pulso. */
+.mao {
+  position: absolute; left: 50%; bottom: 0;
+  width: calc(var(--cw) * 1.9); height: auto; margin-left: calc(var(--cw) * -0.95);
+  transform-origin: 50% 100%;
+  pointer-events: none; will-change: transform;
+}
+.mao-fundo { z-index: 0; }
+.mao-polegar { z-index: 2; }
+.mao:not([src]) { visibility: hidden; }
+
+.seta {
+  position: absolute; top: 42%; z-index: 3;
+  width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+  border: 1px solid var(--linha); background: var(--painel); color: var(--fg);
+  display: grid; place-items: center; box-shadow: var(--sombra);
+}
+.seta-esq { left: 10px; }
+.seta-dir { right: 10px; }
+.seta[disabled] { opacity: .35; cursor: default; }
+.seta svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+
+.dica {
+  margin: 0; padding: 8px 16px 14px; text-align: center; color: var(--muted); font-size: .88rem;
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 2px 12px;
+}
+.posicao { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--fg); }
+.vazio { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); padding: 16px; text-align: center; }
 
 .carimbo {
   position: absolute; z-index: 2; left: 50%; top: 82%;
@@ -134,7 +180,6 @@ main:focus { outline: none; }
 .carimbo.bom { color: var(--bom); }
 .carimbo.ruim { color: var(--ruim); }
 
-.vazio { grid-column: 1 / -1; color: var(--muted); }
 
 /* ---------- Carta ---------- */
 .face {
@@ -263,5 +308,4 @@ html.travado { overflow: hidden; }
 /* ---------- Movimento reduzido ---------- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0s !important; }
-  .mini:hover { transform: none; }
 }

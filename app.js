@@ -11,7 +11,7 @@
   const FOCAVEIS = 'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
   const $ = (sel) => document.querySelector(sel);
-  const grade = $("#grade");
+  const cartasEl = $("#cartas");
   const filtros = $("#filtros");
   const modalCarta = $("#modal-carta");
   const modalResumo = $("#modal-resumo");
@@ -30,6 +30,7 @@
   let estado = carregar();
   let cartaAtual = null;     // número da carta aberta
   let camadaAtiva = null;    // { el, aoFechar, focoRetorno }
+  let leque = null;          // criado no fim, depois das funções de render
 
   function embaralhar(lista) {
     const a = lista.slice();
@@ -124,24 +125,38 @@
     filtros.innerHTML = chip("", "Todas", TOTAL) + tags.map((t) => chip(t, t, contagem.get(t))).join("");
   }
 
-  function renderMesa() {
+  // Monta o leque com as cartas do filtro atual, mantendo no centro a carta
+  // `manterN` (ou a que já estava no centro) quando ela continua na lista.
+  function renderMesa(manterN) {
     const lista = estado.ordem.map((n) => POR_NUMERO.get(n)).filter((c) => !estado.filtro || c.hashtag === estado.filtro);
-    grade.innerHTML = lista.length
+    const anterior = leque ? Number(cartasEl.querySelectorAll(".mini")[leque.indiceCentral()]?.dataset.n) : NaN;
+    const alvoN = manterN ?? anterior;
+    cartasEl.innerHTML = lista.length
       ? lista.map((c) => {
           const r = estado.respostas[c.numero];
           const rotulo = `${descricao(c)}. ${c.numero}. ${c.frase} ${c.hashtag}.` +
             (r ? ` Vista: você achou ${r}. Frase de ${c.politico}.` : " Ainda não vista.");
-          return `<li>
+          return `<div class="braco">
             <button type="button" class="mini ${c.naipe}${r ? " vista" : ""}" data-n="${c.numero}" aria-label="${esc(rotulo)}">
+              <span class="sombra-oferta"></span>
               <div class="palco-mini" aria-hidden="true">
                 <div class="face frente">${htmlFrente(c)}</div>
                 ${r ? `<div class="carimbo ${r}"><b>${r.toUpperCase()}</b><small>${esc(c.politico)}</small></div>` : ""}
               </div>
             </button>
-          </li>`;
+          </div>`;
         }).join("")
-      : `<li class="vazio">Nenhuma carta com esse tema.</li>`;
+      : `<p class="vazio">Nenhuma carta com esse tema.</p>`;
+    const i = lista.findIndex((c) => c.numero === alvoN);
+    leque.recarregar(i >= 0 ? i : undefined);
+    if (!lista.length) atualizarPosicao(-1, 0);
     renderContador();
+  }
+
+  function atualizarPosicao(i, total) {
+    $("#posicao").textContent = total ? `${i + 1} / ${total}` : "";
+    $("#seta-esq").disabled = i <= 0;
+    $("#seta-dir").disabled = i < 0 || i >= total - 1;
   }
 
   function renderContador() {
@@ -151,7 +166,7 @@
   }
 
   function miniDaCarta(n) {
-    return grade.querySelector(`.mini[data-n="${n}"]`);
+    return cartasEl.querySelector(`.mini[data-n="${n}"]`);
   }
 
   /* ---------- Camadas: foco preso, Esc, fundo inerte ---------- */
@@ -298,7 +313,6 @@
     };
 
     if (mini && !reduzMovimento()) {
-      mini.scrollIntoView({ block: "nearest" });
       const destino = mini.getBoundingClientRect();
       const origem = palco.getBoundingClientRect();
       mini.classList.add("voando");
@@ -359,10 +373,8 @@
 
   /* ---------- Eventos ---------- */
 
-  grade.addEventListener("click", (e) => {
-    const mini = e.target.closest(".mini");
-    if (mini) abrirCarta(Number(mini.dataset.n));
-  });
+  $("#seta-esq").addEventListener("click", () => leque.anterior());
+  $("#seta-dir").addEventListener("click", () => leque.proxima());
 
   filtros.addEventListener("click", (e) => {
     const chip = e.target.closest(".chip");
@@ -389,6 +401,20 @@
   const linkPdf = $("#link-pdf");
   if (DADOS.compartilheUrl) linkPdf.href = DADOS.compartilheUrl;
   else linkPdf.closest("p").hidden = true;
+
+  // A mão usa assets/mao-*.png; enquanto as imagens não existirem, cai no SVG provisório.
+  document.querySelectorAll("img[data-mao]").forEach((img) => {
+    img.addEventListener("error", () => {
+      if (!img.src.endsWith(".svg")) img.src = `assets/${img.dataset.mao}.svg`;
+    });
+    img.src = `assets/${img.dataset.mao}.png`;
+  });
+
+  leque = window.criarLeque($("#leque"), {
+    reduzMovimento,
+    aoAbrir: (n) => abrirCarta(n),
+    aoMudarCentral: atualizarPosicao,
+  });
 
   renderFiltros();
   renderMesa();

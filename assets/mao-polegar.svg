@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420">
+  <!-- Substituto provisório de mao-polegar.png: polegar, na frente das cartas -->
+  <path d="M232 336C222 292 238 250 280 226 312 208 348 196 366 212 382 228 372 252 348 264 322 278 302 302 294 342Z"
+        fill="#f0c29e" stroke="#9c6b4e" stroke-width="5" stroke-linejoin="round"/>
+  <ellipse cx="350" cy="224" rx="17" ry="11" transform="rotate(-28 350 224)"
+           fill="#f8dccb" stroke="#9c6b4e" stroke-width="3"/>
+</svg>

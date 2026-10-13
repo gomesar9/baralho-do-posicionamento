@@ -15,7 +15,8 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
-ARQUIVOS=(index.html style.css app.js cards.js)
+ARQUIVOS=(index.html style.css leque.js app.js cards.js)
+PASTAS=(assets)
 if [[ -f .env.deploy ]]; then
   # shellcheck source=/dev/null
   source .env.deploy
@@ -33,8 +34,8 @@ with open("cards.js", "w", encoding="utf-8") as f:
             + json.dumps(dados, ensure_ascii=False, indent=2) + ";\n")
 EOF
 
-for arq in "${ARQUIVOS[@]}"; do
-  if [[ ! -f "$arq" ]]; then
+for arq in "${ARQUIVOS[@]}" "${PASTAS[@]}"; do
+  if [[ ! -e "$arq" ]]; then
     echo "Arquivo ausente: $arq" >&2
     exit 1
   fi
@@ -43,8 +44,9 @@ done
 rm -rf public
 mkdir public
 cp "${ARQUIVOS[@]}" public/
+cp -r "${PASTAS[@]}" public/
 
-echo "public/ pronta: ${ARQUIVOS[*]}"
+echo "public/ pronta: ${ARQUIVOS[*]} ${PASTAS[*]}/"
 
 if [[ "${1:-}" == "--sem-deploy" ]]; then
   exit 0
