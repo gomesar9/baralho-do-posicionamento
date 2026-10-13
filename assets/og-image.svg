@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" font-family="Liberation Sans, Arial, DejaVu Sans, sans-serif">
+  <defs>
+    <radialGradient id="bg" cx="72%" cy="45%" r="85%">
+      <stop offset="0" stop-color="#f7f1e6"/>
+      <stop offset="0.6" stop-color="#eadfcd"/>
+      <stop offset="1" stop-color="#d6c5a8"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Texto -->
+  <text x="60" y="170" font-size="68" font-weight="700" fill="#9b1c2c">Isso é</text>
+  <text x="60" y="245" font-size="68" font-weight="700" fill="#1a1a1a">bom ou ruim?</text>
+  <text x="60" y="312" font-size="26" fill="#3a3530">Julgue cada frase antes de</text>
+  <text x="60" y="346" font-size="26" fill="#3a3530">descobrir de quem ela é.</text>
+  <rect x="60" y="410" width="344" height="56" rx="28" fill="#1a1a1a"/>
+  <text x="232" y="446" font-size="23" font-weight="700" fill="#ffffff" text-anchor="middle">32 cartas · 2 candidatos</text>
+
+  <!-- Carta externa esquerda: 19 ouros -->
+  <g transform="rotate(-22 900 1050)">
+    <rect x="790" y="192" width="230" height="330" rx="18" fill="#000" opacity="0.13"/>
+    <rect x="785" y="185" width="230" height="330" rx="18" fill="#fff" stroke="#111" stroke-width="3"/>
+    <text x="802" y="228" font-size="34" fill="#9b1c2c">19</text>
+    <text x="804" y="262" font-size="30" fill="#9b1c2c" font-family="DejaVu Sans">♦</text>
+    <text x="910" y="268" font-size="17" fill="#9b1c2c" text-anchor="middle">Isso é</text>
+    <text x="910" y="291" font-size="17" fill="#1a1a1a" text-anchor="middle">bom ou ruim?</text>
+    <text x="900" y="345" font-size="15" fill="#1a1a1a" text-anchor="middle">19. “Não reconhecer as</text>
+    <text x="900" y="366" font-size="15" fill="#1a1a1a" text-anchor="middle">mudanças climáticas...”</text>
+    <text x="900" y="480" font-size="12" fill="#444" text-anchor="middle">#meioambiente</text>
+  </g>
+
+  <!-- Carta externa direita: 8 copas -->
+  <g transform="rotate(22 900 1050)">
+    <rect x="790" y="192" width="230" height="330" rx="18" fill="#000" opacity="0.13"/>
+    <rect x="785" y="185" width="230" height="330" rx="18" fill="#fff" stroke="#111" stroke-width="3"/>
+    <text x="802" y="228" font-size="34" fill="#9b1c2c">8</text>
+    <text x="802" y="262" font-size="30" fill="#9b1c2c" font-family="DejaVu Sans">♥</text>
+    <text x="900" y="268" font-size="17" fill="#9b1c2c" text-anchor="middle">Isso é</text>
+    <text x="900" y="291" font-size="17" fill="#1a1a1a" text-anchor="middle">bom ou ruim?</text>
+    <text x="900" y="345" font-size="15" fill="#1a1a1a" text-anchor="middle">8. “Cobrar impostos dos</text>
+    <text x="900" y="366" font-size="15" fill="#1a1a1a" text-anchor="middle">super-ricos para</text>
+    <text x="900" y="387" font-size="15" fill="#1a1a1a" text-anchor="middle">melhorar saúde,</text>
+    <text x="900" y="408" font-size="15" fill="#1a1a1a" text-anchor="middle">educação e segurança.”</text>
+    <text x="900" y="480" font-size="12" fill="#444" text-anchor="middle">#reformatributaria</text>
+    <g transform="rotate(180 990 475)">
+      <text x="982" y="472" font-size="34" fill="#9b1c2c">8</text>
+      <text x="982" y="506" font-size="30" fill="#9b1c2c" font-family="DejaVu Sans">♥</text>
+    </g>
+  </g>
+
+  <!-- Carta interna esquerda: 9 espadas -->
+  <g transform="rotate(-11 900 1050)">
+    <rect x="790" y="192" width="230" height="330" rx="18" fill="#000" opacity="0.13"/>
+    <rect x="785" y="185" width="230" height="330" rx="18" fill="#fff" stroke="#111" stroke-width="3"/>
+    <text x="802" y="228" font-size="34" fill="#111">9</text>
+    <text x="802" y="262" font-size="30" fill="#111" font-family="DejaVu Sans">♠</text>
+    <text x="900" y="268" font-size="17" fill="#9b1c2c" text-anchor="middle">Isso é</text>
+    <text x="900" y="291" font-size="17" fill="#1a1a1a" text-anchor="middle">bom ou ruim?</text>
+    <text x="900" y="345" font-size="15" fill="#1a1a1a" text-anchor="middle">9. “Regular as redes</text>
+    <text x="900" y="366" font-size="15" fill="#1a1a1a" text-anchor="middle">sociais para preservar</text>
+    <text x="900" y="387" font-size="15" fill="#1a1a1a" text-anchor="middle">a Democracia...”</text>
+  </g>
+
+  <!-- Carta interna direita: 28 paus -->
+  <g transform="rotate(11 900 1050)">
+    <rect x="790" y="192" width="230" height="330" rx="18" fill="#000" opacity="0.13"/>
+    <rect x="785" y="185" width="230" height="330" rx="18" fill="#fff" stroke="#111" stroke-width="3"/>
+    <text x="802" y="228" font-size="34" fill="#111">28</text>
+    <text x="804" y="262" font-size="30" fill="#111" font-family="DejaVu Sans">♣</text>
+    <text x="900" y="268" font-size="17" fill="#9b1c2c" text-anchor="middle">Isso é</text>
+    <text x="900" y="291" font-size="17" fill="#1a1a1a" text-anchor="middle">bom ou ruim?</text>
+    <text x="900" y="345" font-size="15" fill="#1a1a1a" text-anchor="middle">28. “Cortar programas</text>
+    <text x="900" y="366" font-size="15" fill="#1a1a1a" text-anchor="middle">sociais.”</text>
+    <text x="900" y="480" font-size="12" fill="#444" text-anchor="middle">#estadominimo</text>
+    <g transform="rotate(180 985 475)">
+      <text x="962" y="472" font-size="34" fill="#111">28</text>
+      <text x="964" y="506" font-size="30" fill="#111" font-family="DejaVu Sans">♣</text>
+    </g>
+  </g>
+
+  <!-- Carta central: 3 copas -->
+  <rect x="772" y="92" width="276" height="394" rx="24" fill="#000" opacity="0.18"/>
+  <rect x="756" y="71" width="288" height="406" rx="28" fill="#f7f1e6" stroke="#9b1c2c" stroke-width="4"/>
+  <rect x="765" y="80" width="270" height="388" rx="20" fill="#fff" stroke="#111" stroke-width="3.5"/>
+  <text x="786" y="132" font-size="42" fill="#9b1c2c">3</text>
+  <text x="785" y="172" font-size="36" fill="#9b1c2c" font-family="DejaVu Sans">♥</text>
+  <text x="900" y="190" font-size="22" fill="#9b1c2c" text-anchor="middle">Isso é</text>
+  <text x="900" y="219" font-size="22" fill="#1a1a1a" text-anchor="middle">bom ou ruim?</text>
+  <text x="900" y="278" font-size="20" fill="#1a1a1a" text-anchor="middle">3. “Adotar jornada de</text>
+  <text x="900" y="305" font-size="20" fill="#1a1a1a" text-anchor="middle">trabalho com duas</text>
+  <text x="900" y="332" font-size="20" fill="#1a1a1a" text-anchor="middle">folgas por semana, sem</text>
+  <text x="900" y="359" font-size="20" fill="#1a1a1a" text-anchor="middle">redução de salário.”</text>
+  <text x="890" y="430" font-size="14" fill="#444" text-anchor="middle">#direitostrabalhistas</text>
+  <g transform="rotate(180 1000 420)">
+    <text x="986" y="424" font-size="42" fill="#9b1c2c">3</text>
+    <text x="985" y="464" font-size="36" fill="#9b1c2c" font-family="DejaVu Sans">♥</text>
+  </g>
+</svg>
