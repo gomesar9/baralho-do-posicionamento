@@ -7,6 +7,7 @@
   const TOTAL = CARTAS.length;
   const POLITICOS = [...new Set(CARTAS.map((c) => c.politico))];
   const CHAVE = "baralho-politico:v1";
+  const NAO_VISTAS = "nao-vistas";   // valor de filtro especial (hashtags sempre começam com #)
   const NOME_NAIPE = { copas: "copas", espadas: "espadas", ouros: "ouros", paus: "paus" };
   const FOCAVEIS = 'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
@@ -118,18 +119,28 @@
     const contagem = new Map();
     for (const c of CARTAS) contagem.set(c.hashtag, (contagem.get(c.hashtag) || 0) + 1);
     const tags = [...contagem.keys()].sort((a, b) => a.localeCompare(b, "pt-BR"));
-    if (estado.filtro && !contagem.has(estado.filtro)) estado.filtro = "";
+    if (estado.filtro && estado.filtro !== NAO_VISTAS && !contagem.has(estado.filtro)) estado.filtro = "";
 
     const chip = (valor, rotulo, n) =>
       `<button type="button" class="chip" data-filtro="${esc(valor)}" aria-pressed="${estado.filtro === valor}">${esc(rotulo)}<span class="n">${n}</span></button>`;
-    filtros.innerHTML = chip("", "Todas", TOTAL) + tags.map((t) => chip(t, t, contagem.get(t))).join("");
+    filtros.innerHTML = chip("", "Todas", TOTAL) + chip(NAO_VISTAS, "Não vistas", TOTAL - vistas()) +
+      tags.map((t) => chip(t, t, contagem.get(t))).join("");
+  }
+
+  function passaNoFiltro(c) {
+    if (!estado.filtro) return true;
+    if (estado.filtro === NAO_VISTAS) return !estado.respostas[c.numero];
+    return c.hashtag === estado.filtro;
   }
 
   // Monta o leque com as cartas do filtro atual, mantendo no centro a carta
   // `manterN` (ou a que já estava no centro) quando ela continua na lista.
-  function renderMesa(manterN) {
-    const lista = estado.ordem.map((n) => POR_NUMERO.get(n)).filter((c) => !estado.filtro || c.hashtag === estado.filtro);
-    const anterior = leque ? Number(cartasEl.querySelectorAll(".mini")[leque.indiceCentral()]?.dataset.n) : NaN;
+  // Se ela saiu da lista (ex.: acabou de ser vista no filtro "Não vistas") e
+  // `manterIndice` estiver ligado, a carta seguinte ocupa o mesmo lugar.
+  function renderMesa(manterN, { manterIndice = false } = {}) {
+    const lista = estado.ordem.map((n) => POR_NUMERO.get(n)).filter(passaNoFiltro);
+    const indiceAnterior = leque ? leque.indiceCentral() : -1;
+    const anterior = leque ? Number(cartasEl.querySelectorAll(".mini")[indiceAnterior]?.dataset.n) : NaN;
     const alvoN = manterN ?? anterior;
     cartasEl.innerHTML = lista.length
       ? lista.map((c) => {
@@ -146,8 +157,11 @@
             </button>
           </div>`;
         }).join("")
-      : `<p class="vazio">Nenhuma carta com esse tema.</p>`;
-    const i = lista.findIndex((c) => c.numero === alvoN);
+      : `<p class="vazio">${estado.filtro === NAO_VISTAS
+          ? "Você já escolheu todas as cartas. Veja o resumo!"
+          : "Nenhuma carta com esse tema."}</p>`;
+    let i = lista.findIndex((c) => c.numero === alvoN);
+    if (i < 0 && manterIndice && indiceAnterior >= 0) i = Math.min(indiceAnterior, lista.length - 1);
     leque.recarregar(i >= 0 ? i : undefined);
     if (!lista.length) atualizarPosicao(-1, 0);
     renderContador();
@@ -163,6 +177,8 @@
     const v = vistas();
     $("#contador").innerHTML = `<strong>${v}</strong> de ${TOTAL} cartas vistas`;
     $("#barra").style.width = `${(v / TOTAL) * 100}%`;
+    const n = filtros.querySelector(`.chip[data-filtro="${NAO_VISTAS}"] .n`);
+    if (n) n.textContent = TOTAL - v;
   }
 
   function miniDaCarta(n) {
@@ -299,16 +315,17 @@
     if (cartaAtual == null) return;
     const n = cartaAtual;
     cartaAtual = null;
-    renderMesa();
-    const mini = miniDaCarta(n);
+    renderMesa(undefined, { manterIndice: true });
+    const mini = miniDaCarta(n);   // some do leque se o filtro for "Não vistas"
+    const focoFinal = mini || cartasEl.querySelector(".mini.central") || $("#mesa");
 
     const terminar = () => {
       if (mini) mini.classList.remove("voando");
-      fecharCamada(modalCarta, mini || $("#mesa"));
+      fecharCamada(modalCarta, focoFinal);
       if (vistas() >= TOTAL && estado.respostas[n] && !estado.resumoVisto) {
         estado.resumoVisto = true;
         salvar();
-        abrirResumo(mini);
+        abrirResumo(focoFinal);
       }
     };
 
