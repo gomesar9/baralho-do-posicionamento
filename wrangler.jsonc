@@ -1,0 +1,15 @@
+// Configuração do deploy no Cloudflare Workers (só arquivos estáticos).
+// public/ é montada por preparar-public.sh antes do deploy.
+{
+  "name": "baralho-politico",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./public"
+  },
+  // Domínio de produção. Como a zona está na mesma conta Cloudflare, o
+  // wrangler cria os registros DNS e o certificado automaticamente.
+  "routes": [
+    { "pattern": "baralhodaverdade.org", "custom_domain": true },
+    { "pattern": "www.baralhodaverdade.org", "custom_domain": true }
+  ]
+}
