@@ -1,8 +1,8 @@
 # Monta public/ e publica o site em produção (baralhodaverdade.org) no
-# Cloudflare Workers a cada push na main. Em pull requests só monta e valida,
-# sem publicar.
+# Cloudflare Workers a cada push na main.
 #
-# Segredos do repositório (Settings → Secrets and variables → Actions):
+# Os segredos ficam no environment "production" (Settings → Environments),
+# que só aceita deploys da branch main:
 #   CLOUDFLARE_API_TOKEN   token com o modelo "Edit Cloudflare Workers"
 #   CLOUDFLARE_ACCOUNT_ID  ID da conta Cloudflare
 name: Deploy
@@ -10,7 +10,9 @@ name: Deploy
 on:
   push:
     branches: [main]
-  pull_request:
+  # Validação de pull requests desligada por enquanto. Para religar, descomente
+  # a linha abaixo: o job "validar" monta public/ e roda um dry run, sem publicar.
+  # pull_request:
   workflow_dispatch:
 
 permissions:
