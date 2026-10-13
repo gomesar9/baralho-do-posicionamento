@@ -296,7 +296,7 @@
       : `<button type="button" class="btn btn-claro" disabled>Ver a fonte</button>`;
     const proxima = vistas() >= TOTAL ? "Ver resumo" : "Próxima carta";
     acoes.innerHTML = `${fonte}
-      <button type="button" class="btn btn-contorno-claro" data-fechar>${proxima}</button>
+      <button type="button" class="btn btn-contorno-claro" data-fechar data-avancar>${proxima}</button>
       ${c.fonteUrl ? "" : `<p class="dica">Esta carta não tem link de fonte.</p>`}`;
   }
 
@@ -315,7 +315,21 @@
     acoes.querySelector(FOCAVEIS)?.focus({ preventScroll: true });
   }
 
-  function fecharCarta() {
+  // Índice no leque da próxima carta ainda não vista, a partir da central e
+  // dando a volta no fim; -1 se todas as cartas do filtro já foram vistas.
+  function proximaNaoVista() {
+    const minis = [...cartasEl.querySelectorAll(".mini")];
+    const atual = Math.max(0, leque.indiceCentral());
+    for (let k = 0; k < minis.length; k++) {
+      const i = (atual + k) % minis.length;
+      if (!estado.respostas[minis[i].dataset.n]) return i;
+    }
+    return -1;
+  }
+
+  // `avancar`: veio do botão "Próxima carta"; depois de a carta voltar ao
+  // leque, ele gira até a próxima carta não vista.
+  function fecharCarta({ avancar = false } = {}) {
     if (cartaAtual == null) return;
     const n = cartaAtual;
     cartaAtual = null;
@@ -330,6 +344,9 @@
         estado.resumoVisto = true;
         salvar();
         abrirResumo(focoFinal);
+      } else if (avancar) {
+        const i = proximaNaoVista();
+        if (i >= 0) leque.irPara(i);
       }
     };
 
@@ -443,7 +460,8 @@
   modalCarta.addEventListener("click", (e) => {
     const r = e.target.closest("[data-resposta]");
     if (r) return responder(r.dataset.resposta);
-    if (e.target.closest("[data-fechar]")) fecharCarta();
+    const f = e.target.closest("[data-fechar]");
+    if (f) fecharCarta({ avancar: f.hasAttribute("data-avancar") });
   });
 
   modalResumo.addEventListener("click", (e) => {
