@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Isso é bom ou ruim?</title>
+  <meta name="description" content="Baralho político: leia cada frase, diga se é boa ou ruim e só depois descubra de qual político ela é.">
+  <meta name="theme-color" content="#efe9df" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1b1a18" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%239b1c23' d='M50 92C20 66 2 48 2 28 2 13 14 2 28 2c10 0 18 6 22 14C54 8 62 2 72 2c14 0 26 11 26 26 0 20-18 38-48 64z'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="s-copas" viewBox="0 0 100 100">
+      <path d="M50 92C20 66 2 48 2 28 2 13 14 2 28 2c10 0 18 6 22 14C54 8 62 2 72 2c14 0 26 11 26 26 0 20-18 38-48 64z"/>
+    </symbol>
+    <symbol id="s-ouros" viewBox="0 0 100 100">
+      <path d="M50 0 86 50 50 100 14 50z"/>
+    </symbol>
+    <symbol id="s-espadas" viewBox="0 0 100 100">
+      <path d="M50 2C78 26 98 42 98 60c0 14-11 24-24 24-9 0-16-4-20-11 1 12 5 20 13 27H33c8-7 12-15 13-27-4 7-11 11-20 11C13 84 2 74 2 60 2 42 22 26 50 2z"/>
+    </symbol>
+    <symbol id="s-paus" viewBox="0 0 100 100">
+      <circle cx="50" cy="27" r="22"/><circle cx="26" cy="58" r="22"/><circle cx="74" cy="58" r="22"/>
+      <path d="M44 50h12c0 22 4 36 14 50H30c10-14 14-28 14-50z"/>
+    </symbol>
+  </svg>
+
+  <a class="skip" href="#mesa">Pular para as cartas</a>
+
+  <header class="top">
+    <div class="wrap">
+      <h1 class="title"><span class="isso">Isso é</span> bom ou ruim?</h1>
+      <p class="lead">Escolha uma carta, leia a frase e julgue por conta própria. Só depois você descobre qual dos dois políticos fez ou defende aquilo.</p>
+      <div class="toolbar">
+        <div class="progress" aria-live="polite">
+          <span id="contador"><strong>0</strong> de 32 cartas vistas</span>
+          <span class="bar" aria-hidden="true"><span id="barra"></span></span>
+        </div>
+        <button type="button" class="btn btn-ghost" id="btn-resumo">Ver resumo</button>
+      </div>
+      <div class="filtros" role="group" aria-label="Filtrar por tema" id="filtros"></div>
+    </div>
+  </header>
+
+  <main id="mesa" class="wrap" tabindex="-1">
+    <h2 class="sr-only">Cartas na mesa</h2>
+    <ul class="grade" id="grade"></ul>
+  </main>
+
+  <footer class="rodape">
+    <div class="wrap">
+      <p><a id="link-pdf" href="#" target="_blank" rel="noopener">Baixar o PDF do jogo para imprimir</a></p>
+      <p class="muted">As fontes de cada frase são os links dos QR codes impressos no verso das cartas originais.</p>
+    </div>
+  </footer>
+
+  <!-- Carta em primeiro plano -->
+  <div class="camada" id="modal-carta" hidden>
+    <div class="fundo" data-fechar></div>
+    <div class="dialogo dialogo-carta" role="dialog" aria-modal="true" aria-labelledby="carta-titulo">
+      <h2 id="carta-titulo" class="sr-only"></h2>
+      <button type="button" class="fechar" data-fechar aria-label="Fechar carta">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <div class="palco" id="palco">
+        <div class="virador" id="virador">
+          <div class="face frente" id="face-frente"></div>
+          <div class="face verso" id="face-verso"></div>
+        </div>
+      </div>
+      <div class="acoes" id="acoes"></div>
+      <p class="sr-only" aria-live="assertive" id="anuncio"></p>
+    </div>
+  </div>
+
+  <!-- Resumo -->
+  <div class="camada" id="modal-resumo" hidden>
+    <div class="fundo" data-fechar></div>
+    <div class="dialogo painel" role="dialog" aria-modal="true" aria-labelledby="resumo-titulo">
+      <button type="button" class="fechar" data-fechar aria-label="Fechar resumo">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <h2 id="resumo-titulo">Seu resumo</h2>
+      <div id="resumo-conteudo"></div>
+      <div class="painel-acoes">
+        <button type="button" class="btn btn-primario" data-fechar id="btn-continuar">Continuar</button>
+        <button type="button" class="btn btn-ghost" id="btn-recomecar">Recomeçar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="cards.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
