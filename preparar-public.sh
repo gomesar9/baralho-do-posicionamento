@@ -5,24 +5,20 @@
 # o site lê os dados de cards.js e o PDF é baixado pelo link do QR "Compartilhe!".
 #
 # Uso:
-#   ./preparar-public.sh              # monta public/ e faz deploy
+#   ./preparar-public.sh              # monta public/ e faz deploy em produção
 #   ./preparar-public.sh --sem-deploy # só monta public/
 #
-# O nome do Worker vem da variável NOME_WORKER, definida no ambiente ou em
-# .env.deploy (ignorado pelo git). Exemplo de .env.deploy:
-#   NOME_WORKER=baralho-politico
+# Nome do Worker, domínio (baralhodaverdade.org) e data de compatibilidade
+# ficam em wrangler.jsonc. Em produção o deploy roda pelo GitHub Actions
+# (.github/workflows/deploy.yml) a cada push na main; este script serve para
+# montar e testar localmente, ou para um deploy manual (exige `wrangler login`).
 set -euo pipefail
 
 cd "$(dirname "$0")"
 
 ARQUIVOS=(index.html style.css leque.js app.js cards.js)
 PASTAS=(assets)
-if [[ -f .env.deploy ]]; then
-  # shellcheck source=/dev/null
-  source .env.deploy
-fi
-NOME_WORKER="${NOME_WORKER:-}"
-DATA_COMPAT="2026-10-01"
+WRANGLER="4.147.0"   # mesma versão do workflow de deploy
 
 # cards.json é a fonte de verdade; cards.js é gerado a partir dele.
 python3 - <<'EOF'
@@ -52,12 +48,4 @@ if [[ "${1:-}" == "--sem-deploy" ]]; then
   exit 0
 fi
 
-if [[ -z "$NOME_WORKER" ]]; then
-  echo "Defina NOME_WORKER no ambiente ou em .env.deploy (ex.: NOME_WORKER=baralho-politico)." >&2
-  exit 1
-fi
-
-npx wrangler deploy \
-  --name "$NOME_WORKER" \
-  --assets public \
-  --compatibility-date "$DATA_COMPAT"
+npx --yes "wrangler@$WRANGLER" deploy

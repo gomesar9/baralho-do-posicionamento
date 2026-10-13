@@ -14,7 +14,10 @@ Abrir `index.html` direto no navegador (funciona em `file://`, pois os dados vê
 
 ## Publicar
 
-`./preparar-public.sh` regenera `cards.js`, monta `public/` (só `index.html`, `style.css`, `leque.js`, `app.js`, `cards.js` e a pasta `assets/`) e faz deploy como Cloudflare Worker de assets estáticos via `npx wrangler deploy`. `--sem-deploy` só monta `public/`. O nome do Worker vem de `NOME_WORKER` (ambiente ou `.env.deploy`, ignorado pelo git). Arquivo novo que o site precise em produção tem de entrar em `ARQUIVOS` (ou pasta em `PASTAS`) no script.
+Produção: https://baralhodaverdade.org (e `www.`), Cloudflare Worker de assets estáticos `baralho-politico`, configurado em `wrangler.jsonc` (nome, domínios como `custom_domain`, `compatibility_date`, diretório `public/`).
+
+- **Pipeline** (`.github/workflows/deploy.yml`): push na `main` (ou disparo manual) monta `public/`, confere se `cards.js` está em dia com `cards.json` e publica com `wrangler deploy`, usando os segredos `CLOUDFLARE_API_TOKEN` e `CLOUDFLARE_ACCOUNT_ID`. Em pull requests só monta e roda `wrangler deploy --dry-run`, sem publicar.
+- **Local**: `./preparar-public.sh --sem-deploy` regenera `cards.js` e monta `public/` (só `index.html`, `style.css`, `leque.js`, `app.js`, `cards.js` e a pasta `assets/`); sem a flag também publica (exige `wrangler login`). Arquivo novo que o site precise em produção tem de entrar em `ARQUIVOS` (ou pasta em `PASTAS`) no script. A versão do wrangler está fixada no script e no workflow; mudar nos dois.
 
 ## Dados
 

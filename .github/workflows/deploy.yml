@@ -1,0 +1,68 @@
+# Monta public/ e publica o site em produção (baralhodaverdade.org) no
+# Cloudflare Workers a cada push na main. Em pull requests só monta e valida,
+# sem publicar.
+#
+# Segredos do repositório (Settings → Secrets and variables → Actions):
+#   CLOUDFLARE_API_TOKEN   token com o modelo "Edit Cloudflare Workers"
+#   CLOUDFLARE_ACCOUNT_ID  ID da conta Cloudflare
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  WRANGLER_VERSAO: "4.147.0"   # mesma de preparar-public.sh
+
+jobs:
+  validar:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: validar-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Montar public/
+        run: ./preparar-public.sh --sem-deploy
+      - name: Conferir cards.js
+        run: |
+          if ! git diff --quiet -- cards.js; then
+            echo "::error file=cards.js::cards.js está desatualizado em relação a cards.json. Rode ./preparar-public.sh --sem-deploy e comite."
+            exit 1
+          fi
+      - name: Validar deploy (dry run, sem publicar)
+        run: npx --yes "wrangler@${WRANGLER_VERSAO}" deploy --dry-run
+
+  publicar:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://baralhodaverdade.org
+    # deploys de produção em fila, nunca interrompidos no meio
+    concurrency:
+      group: producao
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - name: Montar public/
+        run: ./preparar-public.sh --sem-deploy
+      - name: Conferir cards.js
+        run: |
+          if ! git diff --quiet -- cards.js; then
+            echo "::error file=cards.js::cards.js está desatualizado em relação a cards.json. Rode ./preparar-public.sh --sem-deploy e comite."
+            exit 1
+          fi
+      - name: Publicar em produção
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: ${{ env.WRANGLER_VERSAO }}
+          command: deploy

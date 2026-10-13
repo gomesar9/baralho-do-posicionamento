@@ -2,7 +2,7 @@
 
 Versão digital do baralho político "Isso é bom ou ruim?". São 32 cartas com frases: você lê cada uma, decide se acha boa ou ruim e só depois a carta vira e mostra qual dos dois políticos fez ou defende aquilo, com link para a fonte.
 
-Para imprimir o baralho, use o `Baralho.pdf`.
+Jogue em **[baralhodaverdade.org](https://baralhodaverdade.org)**. Para imprimir o baralho, use o `Baralho.pdf`.
 
 ## Como executar
 
