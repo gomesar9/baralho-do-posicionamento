@@ -41,7 +41,7 @@
       const h = palco.clientHeight;
       // altura da carta: cabe com a parte de baixo na mão e a central erguida
       // pé a 0,3·altura da base; a central sobe 16%, cresce 6% e se aproxima (translateZ)
-      const altura = Math.max(150, Math.min((h - 28) / 1.68, (w * 0.64) * 7 / 5, 440));
+      const altura = Math.max(150, Math.min((h - 28) / 1.68, (w * 0.7) * 7 / 5, 440));
       const largura = altura * 5 / 7;
       const base = altura * 0.3;                       // distância do pé da carta à base do palco
       // pivô: raio abaixo do pé da carta (curvatura parecida em qualquer tela)

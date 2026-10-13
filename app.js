@@ -168,14 +168,18 @@
   }
 
   function atualizarPosicao(i, total) {
-    $("#posicao").textContent = total ? `${i + 1} / ${total}` : "";
+    // com filtro o leque mostra menos que o total, então a posição faz sentido
+    const posicao = $("#posicao");
+    posicao.hidden = !estado.filtro || !total;
+    posicao.textContent = total ? `${i + 1} de ${total}` : "";
+    posicao.setAttribute("aria-label", total ? `Carta ${i + 1} de ${total} no filtro` : "");
     $("#seta-esq").disabled = i <= 0;
     $("#seta-dir").disabled = i < 0 || i >= total - 1;
   }
 
   function renderContador() {
     const v = vistas();
-    $("#contador").innerHTML = `<strong>${v}</strong> de ${TOTAL} cartas vistas`;
+    $("#contador").innerHTML = `<strong>${v}</strong> de ${TOTAL} vistas`;
     $("#barra").style.width = `${(v / TOTAL) * 100}%`;
     const n = filtros.querySelector(`.chip[data-filtro="${NAO_VISTAS}"] .n`);
     if (n) n.textContent = TOTAL - v;
@@ -399,7 +403,41 @@
     estado.filtro = chip.dataset.filtro;
     salvar();
     filtros.querySelectorAll(".chip").forEach((b) => b.setAttribute("aria-pressed", String(b === chip)));
+    atualizarBotaoFiltros();
     renderMesa();
+    alternarFiltros(false);
+  });
+
+  /* ---------- Painel de filtros (recolhido atrás do botão) ---------- */
+
+  const btnFiltros = $("#btn-filtros");
+  const painelFiltros = $("#painel-filtros");
+
+  function atualizarBotaoFiltros() {
+    const chip = filtros.querySelector(`.chip[data-filtro="${CSS.escape(estado.filtro)}"]`);
+    const nome = estado.filtro ? chip?.firstChild.textContent : "";
+    $("#btn-filtros-rotulo").textContent = nome || "Filtros";
+    btnFiltros.classList.toggle("ativo", !!estado.filtro);
+    btnFiltros.setAttribute("aria-label", nome ? `Filtros (filtro atual: ${nome})` : "Filtros");
+  }
+
+  function alternarFiltros(abrir = painelFiltros.hidden, devolverFoco = true) {
+    if (abrir === !painelFiltros.hidden) return;
+    painelFiltros.hidden = !abrir;
+    btnFiltros.setAttribute("aria-expanded", String(abrir));
+    if (abrir) (filtros.querySelector('.chip[aria-pressed="true"]') || filtros.querySelector(".chip"))?.focus();
+    else if (devolverFoco && painelFiltros.contains(document.activeElement)) btnFiltros.focus();
+  }
+
+  btnFiltros.addEventListener("click", () => alternarFiltros());
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !painelFiltros.hidden && !camadaAtiva) { e.preventDefault(); alternarFiltros(false); btnFiltros.focus(); }
+  });
+  document.addEventListener("pointerdown", (e) => {
+    if (!painelFiltros.hidden && !painelFiltros.contains(e.target) && !btnFiltros.contains(e.target)) alternarFiltros(false, false);
+  });
+  painelFiltros.addEventListener("focusout", (e) => {
+    if (e.relatedTarget && !painelFiltros.contains(e.relatedTarget) && e.relatedTarget !== btnFiltros) alternarFiltros(false, false);
   });
 
   modalCarta.addEventListener("click", (e) => {
@@ -434,5 +472,6 @@
   });
 
   renderFiltros();
+  atualizarBotaoFiltros();
   renderMesa();
 })();
