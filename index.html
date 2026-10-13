@@ -29,25 +29,55 @@
 
   <a class="skip" href="#mesa">Pular para as cartas</a>
 
+  <div class="tela">
   <header class="top">
     <div class="wrap">
       <h1 class="title"><span class="isso">Isso é</span> bom ou ruim?</h1>
-      <p class="lead">Escolha uma carta, leia a frase e julgue por conta própria. Só depois você descobre qual dos dois políticos fez ou defende aquilo.</p>
+      <p class="lead">Julgue cada frase antes de descobrir de quem ela é.</p>
       <div class="toolbar">
         <div class="progress" aria-live="polite">
-          <span id="contador"><strong>0</strong> de 32 cartas vistas</span>
+          <span id="contador"><strong>0</strong> de 32 vistas</span>
           <span class="bar" aria-hidden="true"><span id="barra"></span></span>
         </div>
-        <button type="button" class="btn btn-ghost" id="btn-resumo">Ver resumo</button>
+        <button type="button" class="btn btn-ghost btn-pequeno" id="btn-filtros"
+                aria-expanded="false" aria-controls="painel-filtros">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+          <span id="btn-filtros-rotulo">Filtros</span>
+        </button>
+        <button type="button" class="btn btn-ghost btn-pequeno" id="btn-resumo">Resumo</button>
       </div>
-      <div class="filtros" role="group" aria-label="Filtrar por tema" id="filtros"></div>
+      <div class="painel-filtros" id="painel-filtros" hidden>
+        <div class="filtros" role="group" aria-label="Filtrar cartas" id="filtros"></div>
+      </div>
     </div>
   </header>
 
-  <main id="mesa" class="wrap" tabindex="-1">
-    <h2 class="sr-only">Cartas na mesa</h2>
-    <ul class="grade" id="grade"></ul>
+  <main id="mesa" class="mesa" tabindex="-1">
+    <h2 class="sr-only">Cartas na mão</h2>
+    <div class="leque" id="leque">
+      <div class="leque-palco" id="leque-palco" role="group" aria-roledescription="leque de cartas"
+           aria-label="Cartas na mão" aria-describedby="leque-dica">
+        <div class="chao" aria-hidden="true"></div>
+        <img class="mao mao-fundo" data-mao="mao-fundo" alt="" draggable="false">
+        <div class="cartas" id="cartas"></div>
+        <img class="mao mao-polegar" data-mao="mao-polegar" alt="" draggable="false">
+      </div>
+    </div>
+    <div class="controles">
+      <button type="button" class="seta" id="seta-esq" aria-label="Carta anterior">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <p class="dica" id="leque-dica">
+        <span class="dica-toque">Arraste e toque na carta.</span>
+        <span class="dica-mouse">Arraste, use ← → ou a roda do mouse e clique na carta do centro.</span>
+      </p>
+      <span class="posicao" id="posicao" hidden></span>
+      <button type="button" class="seta" id="seta-dir" aria-label="Próxima carta">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
   </main>
+  </div>
 
   <footer class="rodape">
     <div class="wrap">
@@ -94,6 +124,7 @@
   </div>
 
   <script src="cards.js"></script>
+  <script src="leque.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
