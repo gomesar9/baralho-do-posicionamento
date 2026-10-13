@@ -2,7 +2,56 @@
 
 Versão digital do baralho político "Isso é bom ou ruim?". São 32 cartas com frases: você lê cada uma, decide se acha boa ou ruim e só depois a carta vira e mostra qual dos dois políticos fez ou defende aquilo, com link para a fonte.
 
-O site é estático (HTML, CSS e JavaScript puro, sem build). Para jogar localmente, abra `index.html` no navegador. Para imprimir o baralho, use o `Baralho.pdf`.
+Para imprimir o baralho, use o `Baralho.pdf`.
+
+## Como executar
+
+O site é estático (HTML, CSS e JavaScript puro), sem build nem dependências. Basta abrir o `index.html` no navegador. Se preferir um servidor local:
+
+```sh
+python3 -m http.server 8000   # depois acesse http://localhost:8000
+```
+
+## Como contribuir com cartas novas
+
+### Regras
+
+- **Comece por uma issue.** Antes de qualquer pull request, abra uma issue com o modelo [Sugestão de carta](https://github.com/gomesar9/baralho-do-posicionamento/issues/new?template=sugestao-de-carta.yml). Uma carta por issue.
+- **Fonte obrigatória e verificável.** O link deve mostrar o próprio político dizendo, propondo ou defendendo aquilo: vídeo, documento oficial, plano de governo, rede social oficial ou reportagem de veículo reconhecido. Informe data e contexto (e o minuto, se for vídeo).
+- **Frase fiel e sem pistas.** O jogo depende de julgar sem saber de quem é. Nada de nomes, partidos, apelidos ou adjetivos que entreguem o autor, e nada que distorça o sentido original.
+- **Sem repetição.** Confira se já não existe carta igual ou parecida no baralho ou em outra issue.
+- **Pull request só depois da issue aprovada**, citando a issue na descrição (ex.: `Closes #12`).
+
+### Adicionar a carta aprovada
+
+1. Adicione a carta ao fim da lista `cartas` em `cards.json`:
+
+   ```json
+   {
+     "numero": 33,
+     "rotulo": "33",
+     "naipe": "copas",
+     "frase": "Texto da frase, sem aspas no começo e no fim.",
+     "hashtag": "#tema",
+     "politico": "LULA",
+     "fonteUrl": "https://link-para-a-fonte"
+   }
+   ```
+
+   - `numero`: o próximo número livre. `rotulo` é o que aparece no canto da carta.
+   - `naipe`: `copas`, `espadas`, `ouros` ou `paus`. Siga o baralho: copas e espadas para LULA, ouros e paus para FLÁVIO BOLSONARO.
+   - `politico`: escrito exatamente como nas outras cartas, para entrar certo no resumo.
+   - `hashtag`: minúsculas e sem acento. Repita um tema existente sempre que possível.
+   - `fonteUrl`: obrigatória. É o link de onde a frase foi tirada.
+2. Gere o `cards.js` de novo:
+
+   ```sh
+   ./preparar-public.sh --sem-deploy
+   ```
+3. Abra o `index.html`, ache a carta no leque e confira o texto e o link "Ver a fonte".
+4. Abra um pull request com o `cards.json` e o `cards.js`.
+
+Com cartas novas, o progresso salvo no navegador de quem já jogou recomeça do zero.
 
 ## Créditos e agradecimentos
 
