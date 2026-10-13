@@ -258,6 +258,7 @@ html.travado { overflow: hidden; }
 .rodape { border-top: 1px solid var(--linha); padding: 20px 0 calc(28px + env(safe-area-inset-bottom)); font-size: .95rem; }
 .rodape p { margin: 0 0 6px; }
 .rodape a { font-weight: 700; }
+.rodape .creditos { margin-top: 14px; }
 
 /* ---------- Movimento reduzido ---------- */
 @media (prefers-reduced-motion: reduce) {
