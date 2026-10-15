@@ -18,15 +18,16 @@ python3 -m http.server 8000   # depois acesse http://localhost:8000
 
 ### Regras
 
-- **Comece por uma issue.** Antes de qualquer pull request, abra uma issue com o modelo [Sugestão de carta](https://github.com/gomesar9/baralho-do-posicionamento/issues/new?template=sugestao-de-carta.yml). Uma carta por issue.
-- **Fonte obrigatória e verificável.** O link deve mostrar o próprio político dizendo, propondo ou defendendo aquilo: vídeo, documento oficial, plano de governo, rede social oficial ou reportagem de veículo reconhecido. Informe data e contexto (e o minuto, se for vídeo).
+- **Sempre duas cartas, uma de cada candidato.** Para o baralho continuar equilibrado, toda sugestão traz um par: uma carta do LULA e uma do FLÁVIO BOLSONARO, de preferência sobre o mesmo tema. Sugestão de carta avulsa não é aceita.
+- **Comece por uma issue.** Antes de qualquer pull request, abra uma issue com o modelo [Sugestão de par de cartas](https://github.com/gomesar9/baralho-do-posicionamento/issues/new?template=sugestao-de-carta.yml). Um par por issue.
+- **Fonte obrigatória e verificável, para cada carta.** O link deve mostrar o próprio candidato dizendo, propondo ou defendendo aquilo: vídeo, documento oficial, plano de governo, rede social oficial ou reportagem de veículo reconhecido. Informe data e contexto (e o minuto, se for vídeo).
 - **Frase fiel e sem pistas.** O jogo depende de julgar sem saber de quem é. Nada de nomes, partidos, apelidos ou adjetivos que entreguem o autor, e nada que distorça o sentido original.
 - **Sem repetição.** Confira se já não existe carta igual ou parecida no baralho ou em outra issue.
 - **Pull request só depois da issue aprovada**, citando a issue na descrição (ex.: `Closes #12`).
 
-### Adicionar a carta aprovada
+### Adicionar o par aprovado
 
-1. Adicione a carta ao fim da lista `cartas` em `cards.json`:
+1. Adicione as duas cartas ao fim da lista `cartas` em `cards.json`, uma de cada candidato:
 
    ```json
    {
@@ -40,7 +41,7 @@ python3 -m http.server 8000   # depois acesse http://localhost:8000
    }
    ```
 
-   - `numero`: o próximo número livre. `rotulo` é o que aparece no canto da carta.
+   - `numero`: os próximos números livres, um para cada carta. `rotulo` é o que aparece no canto da carta.
    - `naipe`: `copas`, `espadas`, `ouros` ou `paus`. Siga o baralho: copas e espadas para LULA, ouros e paus para FLÁVIO BOLSONARO.
    - `politico`: escrito exatamente como nas outras cartas, para entrar certo no resumo.
    - `hashtag`: minúsculas e sem acento. Repita um tema existente sempre que possível.
@@ -52,7 +53,7 @@ python3 -m http.server 8000   # depois acesse http://localhost:8000
    ./preparar-public.sh --sem-deploy
    ```
 
-3. Abra o `index.html`, ache a carta no leque e confira o texto e o link "Ver a fonte".
+3. Abra o `index.html`, ache as duas cartas no leque e confira o texto e o link "Ver a fonte" de cada uma.
 4. Abra um pull request com o `cards.json` e o `cards.js`.
 
 Com cartas novas, o progresso salvo no navegador de quem já jogou recomeça do zero.
