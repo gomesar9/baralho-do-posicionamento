@@ -45,11 +45,13 @@ python3 -m http.server 8000   # depois acesse http://localhost:8000
    - `politico`: escrito exatamente como nas outras cartas, para entrar certo no resumo.
    - `hashtag`: minúsculas e sem acento. Repita um tema existente sempre que possível.
    - `fonteUrl`: obrigatória. É o link de onde a frase foi tirada.
+
 2. Gere o `cards.js` de novo:
 
    ```sh
    ./preparar-public.sh --sem-deploy
    ```
+
 3. Abra o `index.html`, ache a carta no leque e confira o texto e o link "Ver a fonte".
 4. Abra um pull request com o `cards.json` e o `cards.js`.
 
@@ -57,8 +59,10 @@ Com cartas novas, o progresso salvo no navegador de quem já jogou recomeça do 
 
 ## Créditos e agradecimentos
 
-O baralho — frases, arte e PDF — foi criado por **Rebeca Duarte** ([@enfrebeca](https://www.instagram.com/enfrebeca/) no Instagram). Muito obrigado, Rebeca, por criar o jogo e compartilhá-lo livremente. Este site só existe por causa do seu trabalho.
+O baralho (frases, arte e PDF) foi criado pelo coletivo **Do Baralho** ([@nossobaralho](https://www.instagram.com/nossobaralho/) no Instagram). Muito obrigado ao coletivo por criar o jogo e compartilhá-lo livremente. Este site só existe por causa desse trabalho.
+
+Obrigado também a **Rebeca Duarte** ([@enfrebeca](https://www.instagram.com/enfrebeca/) no Instagram), que divulgou o baralho, foi por onde fiquei sabendo dele.
 
 ## Licença
 
-[CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/deed.pt-br) — Creative Commons Atribuição-NãoComercial 4.0 Internacional. Você pode copiar, distribuir, adaptar e imprimir, desde que dê crédito a Rebeca Duarte (@enfrebeca) e não use para fins comerciais. Texto completo em [`LICENSE`](LICENSE).
+[CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/deed.pt-br) — Creative Commons Atribuição-NãoComercial 4.0 Internacional. Você pode copiar, distribuir, adaptar e imprimir, desde que dê crédito ao coletivo Do Baralho (@nossobaralho) e não use para fins comerciais. Texto completo em [`LICENSE`](LICENSE).
